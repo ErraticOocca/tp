@@ -10,30 +10,18 @@
 // Types:
 //
 
-struct request_of_phase_process_class {};
+class obj_kage_class : public fopAc_ac_c {  // , public Z2SoundObjSimple
+public:
+    /* 0x568 */ request_of_phase_process_class mPhaseReq;
+    /* 0x570 */ J3DModel* mpModel;
 
-struct obj_kage_class {};
+    /* 0x574 */ u32 field_0x574;
 
-struct mDoMtx_stack_c {
-    /* 8000CD9C */ void transM(f32, f32, f32);
+    /* 0x578 */ Z2SoundObjSimple* mpSound;
 
-    static u8 now[48];
-};
+}; // Size: 0x5B4
 
-struct fopAc_ac_c {
-    /* 80018B64 */ fopAc_ac_c();
-};
-
-struct dKy_tevstr_c {};
-
-struct J3DModelData {};
-
-struct cXyz {};
-
-struct dScnKy_env_light_c {
-    /* 801A37C4 */ void settingTevStruct(int, cXyz*, dKy_tevstr_c*);
-    /* 801A4DA0 */ void setLightTevColorType_MAJI(J3DModelData*, dKy_tevstr_c*);
-};
+// STATIC_ASSERT(sizeof(obj_kage_class) == 0x5B4);
 
 struct dRes_info_c {};
 
@@ -41,23 +29,11 @@ struct dRes_control_c {
     /* 8003C2EC */ void getRes(char const*, s32, dRes_info_c*, int);
 };
 
-struct csXyz {};
-
-struct Z2SoundObjSimple {
-    /* 802BE844 */ Z2SoundObjSimple();
-};
-
-struct JMath {
-    static u8 sincosTable_[65536];
-};
-
-struct J3DModel {};
-
 //
 // Forward References:
 //
 
-extern "C" static void daObj_Kage_Draw__FP14obj_kage_class();
+// extern "C" static void daObj_Kage_Draw__FP14obj_kage_class();
 extern "C" static void daObj_Kage_Execute__FP14obj_kage_class();
 extern "C" static bool daObj_Kage_IsDelete__FP14obj_kage_class();
 extern "C" static void daObj_Kage_Delete__FP14obj_kage_class();
@@ -90,17 +66,12 @@ extern "C" void setLightTevColorType_MAJI__18dScnKy_env_light_cFP12J3DModelDataP
 extern "C" void cM_rndF__Ff();
 extern "C" void cLib_addCalc2__FPffff();
 extern "C" void __ct__16Z2SoundObjSimpleFv();
-extern "C" void PSMTXCopy();
-extern "C" void PSMTXTrans();
 extern "C" void _savegpr_28();
 extern "C" void _savegpr_29();
 extern "C" void _restgpr_28();
 extern "C" void _restgpr_29();
-extern "C" extern void* g_fopAc_Method[8];
-extern "C" extern void* g_fpcLf_Method[5 + 1 /* padding */];
 extern "C" u8 now__14mDoMtx_stack_c[48];
 extern "C" extern u8 g_dComIfG_gameInfo[122384];
-extern "C" extern u8 g_env_light[4880];
 extern "C" u8 sincosTable___5JMath[65536];
 
 //
@@ -109,14 +80,12 @@ extern "C" u8 sincosTable___5JMath[65536];
 
 /* 80C314D8-80C3153C 000078 0064+00 1/0 0/0 0/0 .text            daObj_Kage_Draw__FP14obj_kage_class
  */
-#pragma push
-#pragma optimization_level 0
-#pragma optimizewithasm off
-static asm void daObj_Kage_Draw(obj_kage_class* param_0) {
-    nofralloc
-#include "asm/rel/d/a/obj/d_a_obj_kage/d_a_obj_kage/daObj_Kage_Draw__FP14obj_kage_class.s"
+static int daObj_Kage_Draw(obj_kage_class* i_this) {
+    g_env_light.settingTevStruct(0x10, &(*i_this).current.pos, &(*i_this).mTevStr);
+    g_env_light.setLightTevColorType_MAJI((*i_this).mpModel->mModelData, &(*i_this).mTevStr);
+    mDoExt_modelUpdateDL((*i_this).mpModel);
+    return 1;
 }
-#pragma pop
 
 /* ############################################################################################## */
 /* 80C3195C-80C31960 000000 0004+00 2/2 0/0 0/0 .rodata          @3854 */
@@ -273,7 +242,7 @@ SECTION_DATA static void* l_daObj_Kage_Method[8] = {
     (void*)daObj_Kage_Delete__FP14obj_kage_class,
     (void*)daObj_Kage_Execute__FP14obj_kage_class,
     (void*)daObj_Kage_IsDelete__FP14obj_kage_class,
-    (void*)daObj_Kage_Draw__FP14obj_kage_class,
+    (void*)daObj_Kage_Draw,
     (void*)NULL,
     (void*)NULL,
     (void*)NULL,
